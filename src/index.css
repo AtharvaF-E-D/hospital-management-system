@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base Application Colors */
+    --background: 210 40% 98%; /* #F8FAFC */
+    --foreground: 215 25% 27%; /* #334155 (Body) */
+
+    --surface: 0 0% 100%; /* #FFFFFF */
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 222 47% 11%; /* #0F172A (Heading) */
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --border: 214 32% 91%; /* #E2E8F0 */
+    --input: 214 32% 91%; /* #CBD5E1 - closer to 214 32% 84%, using original input var mapping */
+    
+    --muted: 210 40% 96.1%; /* background for muted components */
+    --muted-foreground: 215 16% 47%; /* #64748B */
+
+    /* Brand Colors */
+    --primary: 201 100% 36%; /* #0077B6 */
+    --primary-foreground: 0 0% 100%;
+    
+    --primary-hover: 201 100% 29%; /* #005F93 */
+    --primary-active: 201 100% 22%; /* #00486E */
+    --primary-light: 197 75% 95%; /* #EAF7FC */
+
+    --secondary: 190 100% 42%; /* #00B4D8 */
+    --secondary-foreground: 0 0% 100%;
+    
+    --secondary-light: 190 73% 75%; /* #90E0EF */
+
+    --accent: 190 68% 88%; /* #CAF0F8 (Accent Background) */
+    --accent-foreground: 222 47% 11%;
+
+    --premium-dark: 239 94% 19%; /* #03045E */
+    --premium-dark-foreground: 0 0% 100%;
+
+    /* Semantic Colors */
+    --success: 142 71% 45%; /* #22C55E */
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%; /* #F59E0B */
+    --warning-foreground: 0 0% 100%;
+
+    --danger: 0 84% 60%; /* #EF4444 */
+    --danger-foreground: 0 0% 100%;
+
+    --critical: 0 72% 51%; /* #DC2626 */
+    --critical-foreground: 0 0% 100%;
+
+    --info: 190 100% 42%; /* #00B4D8 */
+    --info-foreground: 0 0% 100%;
+
+    /* Standardized mappings */
+    --destructive: var(--danger);
+    --destructive-foreground: var(--danger-foreground);
+
+    --ring: 190 73% 75%; /* Focus Ring: #90E0EF */
+
+    /* Small border radius for the Epic/Notion feel */
+    --radius: 0.3rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: hsl(222 47% 11%); /* Heading: #0F172A */
+  }
+}
+
