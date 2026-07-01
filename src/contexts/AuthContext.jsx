@@ -20,11 +20,12 @@ export const AuthProvider = ({ children }) => {
     // Simulate API call
     return new Promise((resolve) => {
       setTimeout(() => {
+        const isDoctor = email.toLowerCase().includes("doctor");
         const dummyUser = {
-          id: "1",
-          name: "Dr. John Doe",
+          id: isDoctor ? "doc-1" : "1",
+          name: isDoctor ? "Dr. Sarah Smith" : "Dr. John Doe",
           email: email,
-          role: "SUPER_ADMIN", // Defaulting to super admin for demo
+          role: isDoctor ? "DOCTOR" : "SUPER_ADMIN", // Defaulting to super admin for demo unless doctor
         };
         setUser(dummyUser);
         localStorage.setItem("hospital_user", JSON.stringify(dummyUser));

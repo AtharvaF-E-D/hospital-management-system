@@ -26,7 +26,13 @@ export default function LoginPage() {
     try {
       const result = await login(email, password);
       if (result.success) {
-        navigate(from, { replace: true });
+        // Redirect logic based on role
+        const loggedInUser = JSON.parse(localStorage.getItem("hospital_user"));
+        if (loggedInUser?.role === "DOCTOR") {
+          navigate("/doctor", { replace: true });
+        } else {
+          navigate(from, { replace: true });
+        }
       }
     } catch (err) {
       setError("Invalid credentials. Please try again.");
@@ -146,9 +152,11 @@ export default function LoginPage() {
                 )}
               </Button>
 
-              <p className="text-center text-xs text-muted-foreground pt-2">
-                Demo: Use any email / password to login as Super Admin
-              </p>
+              <div className="text-center text-xs text-muted-foreground pt-2 space-y-1">
+                <p>Demo Admin: admin@epichealth.com</p>
+                <p>Demo Doctor: doctor@epichealth.com</p>
+                <p>Use any password.</p>
+              </div>
             </form>
           </CardContent>
         </Card>

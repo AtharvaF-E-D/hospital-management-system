@@ -2,7 +2,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { MockDataProvider } from "./contexts/MockDataContext";
 import MainLayout from "./layouts/MainLayout";
+import DoctorLayout from "./layouts/doctor/DoctorLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import DoctorDashboard from "./pages/doctor/DoctorDashboard";
+import DoctorPatientsPage from "./pages/doctor/DoctorPatientsPage";
+import PatientProfileEMR from "./pages/doctor/PatientProfileEMR";
+import ConsultationPage from "./pages/doctor/ConsultationPage";
+import PrescriptionPage from "./pages/doctor/PrescriptionPage";
+import LabOrderPage from "./pages/doctor/LabOrderPage";
+import RadiologyOrderPage from "./pages/doctor/RadiologyOrderPage";
+import DoctorReportsPage from "./pages/doctor/DoctorReportsPage";
 
 // Pages
 import LoginPage from "./pages/LoginPage";
@@ -32,6 +41,41 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
+            
+            {/* Doctor Portal Routes */}
+            <Route path="/doctor" element={<DoctorLayout />}>
+              <Route index element={<DoctorDashboard />} />
+              <Route path="appointments" element={<DynamicSubModulePage />} />
+              <Route path="appointments/today" element={<DynamicSubModulePage />} />
+              <Route path="appointments/calendar" element={<DynamicSubModulePage />} />
+              <Route path="appointments/queue" element={<DynamicSubModulePage />} />
+              
+              <Route path="patients" element={<DoctorPatientsPage />} />
+              <Route path="patients/search" element={<DoctorPatientsPage />} />
+              <Route path="patients/list" element={<DoctorPatientsPage />} />
+              <Route path="patients/profile/:id" element={<PatientProfileEMR />} />
+              
+              <Route path="consultation" element={<ConsultationPage />} />
+              <Route path="consultation/notes" element={<DynamicSubModulePage />} />
+              <Route path="consultation/prescription" element={<PrescriptionPage />} />
+              <Route path="consultation/lab" element={<LabOrderPage />} />
+              <Route path="consultation/radiology" element={<RadiologyOrderPage />} />
+              <Route path="consultation/discharge" element={<DynamicSubModulePage />} />
+              <Route path="consultation/certificates" element={<DynamicSubModulePage />} />
+              <Route path="consultation/referrals" element={<DynamicSubModulePage />} />
+              <Route path="consultation/telemedicine" element={<DynamicSubModulePage />} />
+              
+              <Route path="messages" element={<DynamicSubModulePage />} />
+              <Route path="tasks" element={<DynamicSubModulePage />} />
+              <Route path="documents" element={<DynamicSubModulePage />} />
+              <Route path="reports" element={<DoctorReportsPage />} />
+              <Route path="profile" element={<DynamicSubModulePage />} />
+              <Route path="settings" element={<DynamicSubModulePage />} />
+              
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+
+            {/* Super Admin / Staff Portal Routes */}
             <Route path="/" element={<MainLayout />}>
               {/* Dashboard */}
               <Route index element={<DashboardPage />} />
