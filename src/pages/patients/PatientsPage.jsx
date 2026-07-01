@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import PageHeader from "@/components/common/PageHeader";
 import DataTable from "@/components/common/DataTable";
 import { StatCard, StatusBadge } from "@/components/common/DataDisplay";
+import { useMockData } from "@/contexts/MockDataContext";
 import { Plus, Users, UserPlus, UserCheck, Activity, MoreHorizontal, Eye, Edit, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
@@ -10,19 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const patients = Array.from({ length: 50 }, (_, i) => ({
-  id: i + 1,
-  uhid: `UHID-${String(1000 + i).padStart(6, "0")}`,
-  name: ["Rajesh Kumar", "Priya Sharma", "Amit Patel", "Sneha Singh", "Vikram Reddy", "Ananya Gupta", "Suresh Nair", "Meera Desai", "Arjun Mehta", "Kavita Joshi"][i % 10],
-  age: 20 + (i % 60),
-  gender: i % 3 === 0 ? "Male" : i % 3 === 1 ? "Female" : "Male",
-  phone: `+91 98${String(i).padStart(8, "0")}`,
-  bloodGroup: ["A+", "B+", "O+", "AB+", "A-", "B-", "O-"][i % 7],
-  lastVisit: `2026-06-${String(1 + (i % 28)).padStart(2, "0")}`,
-  status: ["active", "inactive", "admitted"][i % 3],
-  doctor: ["Dr. Verma", "Dr. Iyer", "Dr. Kapoor", "Dr. Rao", "Dr. Shah"][i % 5],
-}));
-
+// Replaced hardcoded array with context state
 const columns = [
   { key: "uhid", label: "UHID", width: "120px" },
   {
@@ -53,6 +43,9 @@ const columns = [
 ];
 
 export default function PatientsPage() {
+  const navigate = useNavigate();
+  const { patients, deletePatient } = useMockData();
+
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
@@ -63,7 +56,7 @@ export default function PatientsPage() {
           { label: "Patient Management" },
         ]}
         actions={
-          <Button size="sm" className="h-8 text-xs">
+          <Button size="sm" className="h-8 text-xs" onClick={() => navigate("/patients/register")}>
             <Plus className="h-3.5 w-3.5 mr-1" />
             New Patient
           </Button>
@@ -95,9 +88,9 @@ export default function PatientsPage() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem><Eye className="h-3.5 w-3.5 mr-2" />View Profile</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/patients/medical-history")}><Eye className="h-3.5 w-3.5 mr-2" />View Profile</DropdownMenuItem>
               <DropdownMenuItem><Edit className="h-3.5 w-3.5 mr-2" />Edit</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive"><Trash2 className="h-3.5 w-3.5 mr-2" />Delete</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive" onClick={() => deletePatient(row.id)}><Trash2 className="h-3.5 w-3.5 mr-2" />Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}

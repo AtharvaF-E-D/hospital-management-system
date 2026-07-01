@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/common/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Check, ChevronRight, User, Phone, Shield } from "lucide-react";
+import { useMockData } from "@/contexts/MockDataContext";
 
 const steps = [
   { id: "personal", title: "Personal Info", icon: User },
@@ -13,10 +14,39 @@ const steps = [
 ];
 
 export default function PatientRegistrationPage() {
+  const navigate = useNavigate();
+  const { addPatient } = useMockData();
   const [currentStep, setCurrentStep] = useState(0);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    dob: "",
+    gender: "",
+    bloodGroup: "",
+    phone: "",
+    email: "",
+    doctor: "Dr. Smith", // default mock value
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
 
   const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
+
+  const handleComplete = () => {
+    addPatient({
+      name: `${formData.firstName} ${formData.lastName}`.trim() || "Unknown Patient",
+      age: formData.dob ? new Date().getFullYear() - new Date(formData.dob).getFullYear() : 30,
+      gender: formData.gender || "Not Specified",
+      bloodGroup: formData.bloodGroup || "Unknown",
+      phone: formData.phone || "N/A",
+      status: "Active IPD",
+      doctor: formData.doctor,
+    });
+    navigate("/patients");
+  };
 
   return (
     <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full pb-10">
@@ -78,28 +108,28 @@ export default function PatientRegistrationPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name <span className="text-destructive">*</span></Label>
-                <Input id="firstName" placeholder="John" />
+                <Input id="firstName" placeholder="John" value={formData.firstName} onChange={handleInputChange} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Last Name <span className="text-destructive">*</span></Label>
-                <Input id="lastName" placeholder="Doe" />
+                <Input id="lastName" placeholder="Doe" value={formData.lastName} onChange={handleInputChange} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="dob">Date of Birth <span className="text-destructive">*</span></Label>
-                <Input id="dob" type="date" />
+                <Input id="dob" type="date" value={formData.dob} onChange={handleInputChange} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="gender">Gender <span className="text-destructive">*</span></Label>
-                <select id="gender" className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+                <select id="gender" value={formData.gender} onChange={handleInputChange} className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
                   <option value="">Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="bloodGroup">Blood Group</Label>
-                <select id="bloodGroup" className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+                <select id="bloodGroup" value={formData.bloodGroup} onChange={handleInputChange} className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
                   <option value="">Select Type</option>
                   <option value="A+">A+</option>
                   <option value="A-">A-</option>
@@ -118,11 +148,11 @@ export default function PatientRegistrationPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number <span className="text-destructive">*</span></Label>
-                <Input id="phone" placeholder="+1 (555) 000-0000" />
+                <Input id="phone" placeholder="+1 (555) 000-0000" value={formData.phone} onChange={handleInputChange} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
-                <Input id="email" type="email" placeholder="john.doe@example.com" />
+                <Input id="email" type="email" placeholder="john.doe@example.com" value={formData.email} onChange={handleInputChange} />
               </div>
               <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="address">Residential Address</Label>
@@ -203,7 +233,7 @@ export default function PatientRegistrationPage() {
               Next Step <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           ) : (
-            <Button className="bg-green-600 hover:bg-green-700 text-white">
+            <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={handleComplete}>
               <Check className="mr-2 h-4 w-4" /> Complete Registration
             </Button>
           )}

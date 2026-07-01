@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { MockDataProvider } from "./contexts/MockDataContext";
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -11,40 +12,21 @@ import DashboardPage from "./pages/DashboardPage";
 import PatientsPage from "./pages/patients/PatientsPage";
 import PatientRegistrationPage from "./pages/patients/PatientRegistrationPage";
 import PatientProfilePage from "./pages/patients/PatientProfilePage";
+import PatientAllergiesPage from "./pages/patients/PatientAllergiesPage";
+import PatientInsurancePage from "./pages/patients/PatientInsurancePage";
+import PatientDocumentsPage from "./pages/patients/PatientDocumentsPage";
 import AppointmentsPage from "./pages/appointments/AppointmentsPage";
 import AppointmentsCalendarPage from "./pages/appointments/AppointmentsCalendarPage";
-import OPDPage from "./pages/opd/OPDPage";
 import OPDConsultationPage from "./pages/opd/OPDConsultationPage";
-import IPDPage from "./pages/ipd/IPDPage";
-import EmergencyPage from "./pages/emergency/EmergencyPage";
-import DoctorsPage from "./pages/doctors/DoctorsPage";
-import NurseStationPage from "./pages/nurse/NurseStationPage";
-import LaboratoryPage from "./pages/laboratory/LaboratoryPage";
-import RadiologyPage from "./pages/radiology/RadiologyPage";
-import PharmacyPage from "./pages/pharmacy/PharmacyPage";
-import InventoryPage from "./pages/inventory/InventoryPage";
-import BloodBankPage from "./pages/bloodbank/BloodBankPage";
-import OperationTheatrePage from "./pages/ot/OperationTheatrePage";
-import AmbulancePage from "./pages/ambulance/AmbulancePage";
-import BillingPage from "./pages/billing/BillingPage";
-import InsurancePage from "./pages/insurance/InsurancePage";
-import FinancePage from "./pages/finance/FinancePage";
-import HRPage from "./pages/hr/HRPage";
-import CRMPage from "./pages/crm/CRMPage";
-import FrontOfficePage from "./pages/frontoffice/FrontOfficePage";
-import ReportsPage from "./pages/reports/ReportsPage";
-import AnalyticsPage from "./pages/analytics/AnalyticsPage";
-import AdminPage from "./pages/admin/AdminPage";
-import UserManagementPage from "./pages/users/UserManagementPage";
-import AICenterPage from "./pages/ai/AICenterPage";
-import SettingsPage from "./pages/settings/SettingsPage";
+import DynamicSubModulePage from "./components/common/DynamicSubModulePage";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Public Routes */}
+    <MockDataProvider>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            {/* Public Routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/403" element={<ForbiddenPage />} />
 
@@ -62,189 +44,189 @@ function App() {
               <Route path="patients" element={<PatientsPage />} />
               <Route path="patients/register" element={<PatientRegistrationPage />} />
               <Route path="patients/medical-history" element={<PatientProfilePage />} />
-              <Route path="patients/allergies" element={<PatientsPage />} />
-              <Route path="patients/insurance" element={<PatientsPage />} />
-              <Route path="patients/documents" element={<PatientsPage />} />
+              <Route path="patients/allergies" element={<PatientAllergiesPage />} />
+              <Route path="patients/insurance" element={<PatientInsurancePage />} />
+              <Route path="patients/documents" element={<PatientDocumentsPage />} />
 
               {/* Appointments */}
               <Route path="appointments" element={<AppointmentsPage />} />
               <Route path="appointments/calendar" element={<AppointmentsCalendarPage />} />
-              <Route path="appointments/schedule" element={<AppointmentsPage />} />
-              <Route path="appointments/queue" element={<AppointmentsPage />} />
-              <Route path="appointments/telemedicine" element={<AppointmentsPage />} />
+              <Route path="appointments/schedule" element={<DynamicSubModulePage />} />
+              <Route path="appointments/queue" element={<DynamicSubModulePage />} />
+              <Route path="appointments/telemedicine" element={<DynamicSubModulePage />} />
 
               {/* OPD */}
-              <Route path="opd" element={<OPDPage />} />
+              <Route path="opd" element={<DynamicSubModulePage />} />
               <Route path="opd/consultation" element={<OPDConsultationPage />} />
-              <Route path="opd/prescription" element={<OPDPage />} />
-              <Route path="opd/diagnosis" element={<OPDPage />} />
-              <Route path="opd/notes" element={<OPDPage />} />
-              <Route path="opd/billing" element={<OPDPage />} />
+              <Route path="opd/prescription" element={<DynamicSubModulePage />} />
+              <Route path="opd/diagnosis" element={<DynamicSubModulePage />} />
+              <Route path="opd/notes" element={<DynamicSubModulePage />} />
+              <Route path="opd/billing" element={<DynamicSubModulePage />} />
 
               {/* IPD */}
-              <Route path="ipd" element={<IPDPage />} />
-              <Route path="ipd/beds" element={<IPDPage />} />
-              <Route path="ipd/wards" element={<IPDPage />} />
-              <Route path="ipd/nursing-chart" element={<IPDPage />} />
-              <Route path="ipd/discharge" element={<IPDPage />} />
-              <Route path="ipd/discharge-summary" element={<IPDPage />} />
+              <Route path="ipd" element={<DynamicSubModulePage />} />
+              <Route path="ipd/beds" element={<DynamicSubModulePage />} />
+              <Route path="ipd/wards" element={<DynamicSubModulePage />} />
+              <Route path="ipd/nursing-chart" element={<DynamicSubModulePage />} />
+              <Route path="ipd/discharge" element={<DynamicSubModulePage />} />
+              <Route path="ipd/discharge-summary" element={<DynamicSubModulePage />} />
 
               {/* Emergency */}
-              <Route path="emergency" element={<EmergencyPage />} />
-              <Route path="emergency/triage" element={<EmergencyPage />} />
-              <Route path="emergency/queue" element={<EmergencyPage />} />
-              <Route path="emergency/billing" element={<EmergencyPage />} />
+              <Route path="emergency" element={<DynamicSubModulePage />} />
+              <Route path="emergency/triage" element={<DynamicSubModulePage />} />
+              <Route path="emergency/queue" element={<DynamicSubModulePage />} />
+              <Route path="emergency/billing" element={<DynamicSubModulePage />} />
 
               {/* Doctors */}
-              <Route path="doctors" element={<DoctorsPage />} />
-              <Route path="doctors/availability" element={<DoctorsPage />} />
-              <Route path="doctors/leaves" element={<DoctorsPage />} />
-              <Route path="doctors/departments" element={<DoctorsPage />} />
-              <Route path="doctors/specializations" element={<DoctorsPage />} />
+              <Route path="doctors" element={<DynamicSubModulePage />} />
+              <Route path="doctors/availability" element={<DynamicSubModulePage />} />
+              <Route path="doctors/leaves" element={<DynamicSubModulePage />} />
+              <Route path="doctors/departments" element={<DynamicSubModulePage />} />
+              <Route path="doctors/specializations" element={<DynamicSubModulePage />} />
 
               {/* Nurse Station */}
-              <Route path="nurse" element={<NurseStationPage />} />
-              <Route path="nurse/medication" element={<NurseStationPage />} />
-              <Route path="nurse/vitals" element={<NurseStationPage />} />
-              <Route path="nurse/notes" element={<NurseStationPage />} />
-              <Route path="nurse/shift" element={<NurseStationPage />} />
+              <Route path="nurse" element={<DynamicSubModulePage />} />
+              <Route path="nurse/medication" element={<DynamicSubModulePage />} />
+              <Route path="nurse/vitals" element={<DynamicSubModulePage />} />
+              <Route path="nurse/notes" element={<DynamicSubModulePage />} />
+              <Route path="nurse/shift" element={<DynamicSubModulePage />} />
 
               {/* Laboratory */}
-              <Route path="lab" element={<LaboratoryPage />} />
-              <Route path="lab/samples" element={<LaboratoryPage />} />
-              <Route path="lab/processing" element={<LaboratoryPage />} />
-              <Route path="lab/reports" element={<LaboratoryPage />} />
-              <Route path="lab/templates" element={<LaboratoryPage />} />
-              <Route path="lab/reference" element={<LaboratoryPage />} />
+              <Route path="lab" element={<DynamicSubModulePage />} />
+              <Route path="lab/samples" element={<DynamicSubModulePage />} />
+              <Route path="lab/processing" element={<DynamicSubModulePage />} />
+              <Route path="lab/reports" element={<DynamicSubModulePage />} />
+              <Route path="lab/templates" element={<DynamicSubModulePage />} />
+              <Route path="lab/reference" element={<DynamicSubModulePage />} />
 
               {/* Radiology */}
-              <Route path="radiology" element={<RadiologyPage />} />
-              <Route path="radiology/imaging" element={<RadiologyPage />} />
-              <Route path="radiology/reports" element={<RadiologyPage />} />
+              <Route path="radiology" element={<DynamicSubModulePage />} />
+              <Route path="radiology/imaging" element={<DynamicSubModulePage />} />
+              <Route path="radiology/reports" element={<DynamicSubModulePage />} />
 
               {/* Pharmacy */}
-              <Route path="pharmacy" element={<PharmacyPage />} />
-              <Route path="pharmacy/inventory" element={<PharmacyPage />} />
-              <Route path="pharmacy/purchase" element={<PharmacyPage />} />
-              <Route path="pharmacy/sales" element={<PharmacyPage />} />
-              <Route path="pharmacy/expiry" element={<PharmacyPage />} />
-              <Route path="pharmacy/suppliers" element={<PharmacyPage />} />
+              <Route path="pharmacy" element={<DynamicSubModulePage />} />
+              <Route path="pharmacy/inventory" element={<DynamicSubModulePage />} />
+              <Route path="pharmacy/purchase" element={<DynamicSubModulePage />} />
+              <Route path="pharmacy/sales" element={<DynamicSubModulePage />} />
+              <Route path="pharmacy/expiry" element={<DynamicSubModulePage />} />
+              <Route path="pharmacy/suppliers" element={<DynamicSubModulePage />} />
 
               {/* Inventory */}
-              <Route path="inventory" element={<InventoryPage />} />
-              <Route path="inventory/stock" element={<InventoryPage />} />
-              <Route path="inventory/purchase-orders" element={<InventoryPage />} />
-              <Route path="inventory/grn" element={<InventoryPage />} />
-              <Route path="inventory/vendors" element={<InventoryPage />} />
-              <Route path="inventory/assets" element={<InventoryPage />} />
+              <Route path="inventory" element={<DynamicSubModulePage />} />
+              <Route path="inventory/stock" element={<DynamicSubModulePage />} />
+              <Route path="inventory/purchase-orders" element={<DynamicSubModulePage />} />
+              <Route path="inventory/grn" element={<DynamicSubModulePage />} />
+              <Route path="inventory/vendors" element={<DynamicSubModulePage />} />
+              <Route path="inventory/assets" element={<DynamicSubModulePage />} />
 
               {/* Blood Bank */}
-              <Route path="blood-bank" element={<BloodBankPage />} />
-              <Route path="blood-bank/stock" element={<BloodBankPage />} />
-              <Route path="blood-bank/issue" element={<BloodBankPage />} />
-              <Route path="blood-bank/compatibility" element={<BloodBankPage />} />
+              <Route path="blood-bank" element={<DynamicSubModulePage />} />
+              <Route path="blood-bank/stock" element={<DynamicSubModulePage />} />
+              <Route path="blood-bank/issue" element={<DynamicSubModulePage />} />
+              <Route path="blood-bank/compatibility" element={<DynamicSubModulePage />} />
 
               {/* Operation Theatre */}
-              <Route path="ot" element={<OperationTheatrePage />} />
-              <Route path="ot/operations" element={<OperationTheatrePage />} />
-              <Route path="ot/surgeons" element={<OperationTheatrePage />} />
-              <Route path="ot/notes" element={<OperationTheatrePage />} />
+              <Route path="ot" element={<DynamicSubModulePage />} />
+              <Route path="ot/operations" element={<DynamicSubModulePage />} />
+              <Route path="ot/surgeons" element={<DynamicSubModulePage />} />
+              <Route path="ot/notes" element={<DynamicSubModulePage />} />
 
               {/* Ambulance */}
-              <Route path="ambulance" element={<AmbulancePage />} />
-              <Route path="ambulance/drivers" element={<AmbulancePage />} />
-              <Route path="ambulance/bookings" element={<AmbulancePage />} />
-              <Route path="ambulance/maintenance" element={<AmbulancePage />} />
+              <Route path="ambulance" element={<DynamicSubModulePage />} />
+              <Route path="ambulance/drivers" element={<DynamicSubModulePage />} />
+              <Route path="ambulance/bookings" element={<DynamicSubModulePage />} />
+              <Route path="ambulance/maintenance" element={<DynamicSubModulePage />} />
 
               {/* Billing */}
-              <Route path="billing" element={<BillingPage />} />
-              <Route path="billing/payments" element={<BillingPage />} />
-              <Route path="billing/refunds" element={<BillingPage />} />
-              <Route path="billing/packages" element={<BillingPage />} />
-              <Route path="billing/services" element={<BillingPage />} />
-              <Route path="billing/taxes" element={<BillingPage />} />
+              <Route path="billing" element={<DynamicSubModulePage />} />
+              <Route path="billing/payments" element={<DynamicSubModulePage />} />
+              <Route path="billing/refunds" element={<DynamicSubModulePage />} />
+              <Route path="billing/packages" element={<DynamicSubModulePage />} />
+              <Route path="billing/services" element={<DynamicSubModulePage />} />
+              <Route path="billing/taxes" element={<DynamicSubModulePage />} />
 
               {/* Insurance */}
-              <Route path="insurance" element={<InsurancePage />} />
-              <Route path="insurance/companies" element={<InsurancePage />} />
-              <Route path="insurance/policies" element={<InsurancePage />} />
-              <Route path="insurance/approvals" element={<InsurancePage />} />
+              <Route path="insurance" element={<DynamicSubModulePage />} />
+              <Route path="insurance/companies" element={<DynamicSubModulePage />} />
+              <Route path="insurance/policies" element={<DynamicSubModulePage />} />
+              <Route path="insurance/approvals" element={<DynamicSubModulePage />} />
 
               {/* Finance */}
-              <Route path="finance" element={<FinancePage />} />
-              <Route path="finance/expense" element={<FinancePage />} />
-              <Route path="finance/ledger" element={<FinancePage />} />
-              <Route path="finance/bank" element={<FinancePage />} />
-              <Route path="finance/budget" element={<FinancePage />} />
-              <Route path="finance/profit-loss" element={<FinancePage />} />
+              <Route path="finance" element={<DynamicSubModulePage />} />
+              <Route path="finance/expense" element={<DynamicSubModulePage />} />
+              <Route path="finance/ledger" element={<DynamicSubModulePage />} />
+              <Route path="finance/bank" element={<DynamicSubModulePage />} />
+              <Route path="finance/budget" element={<DynamicSubModulePage />} />
+              <Route path="finance/profit-loss" element={<DynamicSubModulePage />} />
 
               {/* HR */}
-              <Route path="hr" element={<HRPage />} />
-              <Route path="hr/attendance" element={<HRPage />} />
-              <Route path="hr/leaves" element={<HRPage />} />
-              <Route path="hr/payroll" element={<HRPage />} />
-              <Route path="hr/shift" element={<HRPage />} />
-              <Route path="hr/recruitment" element={<HRPage />} />
+              <Route path="hr" element={<DynamicSubModulePage />} />
+              <Route path="hr/attendance" element={<DynamicSubModulePage />} />
+              <Route path="hr/leaves" element={<DynamicSubModulePage />} />
+              <Route path="hr/payroll" element={<DynamicSubModulePage />} />
+              <Route path="hr/shift" element={<DynamicSubModulePage />} />
+              <Route path="hr/recruitment" element={<DynamicSubModulePage />} />
 
               {/* CRM */}
-              <Route path="crm" element={<CRMPage />} />
-              <Route path="crm/communication" element={<CRMPage />} />
-              <Route path="crm/campaign" element={<CRMPage />} />
-              <Route path="crm/feedback" element={<CRMPage />} />
+              <Route path="crm" element={<DynamicSubModulePage />} />
+              <Route path="crm/communication" element={<DynamicSubModulePage />} />
+              <Route path="crm/campaign" element={<DynamicSubModulePage />} />
+              <Route path="crm/feedback" element={<DynamicSubModulePage />} />
 
               {/* Front Office */}
-              <Route path="front-office" element={<FrontOfficePage />} />
-              <Route path="front-office/reception" element={<FrontOfficePage />} />
-              <Route path="front-office/calls" element={<FrontOfficePage />} />
-              <Route path="front-office/complaints" element={<FrontOfficePage />} />
+              <Route path="front-office" element={<DynamicSubModulePage />} />
+              <Route path="front-office/reception" element={<DynamicSubModulePage />} />
+              <Route path="front-office/calls" element={<DynamicSubModulePage />} />
+              <Route path="front-office/complaints" element={<DynamicSubModulePage />} />
 
               {/* Reports */}
-              <Route path="reports" element={<ReportsPage />} />
-              <Route path="reports/financial" element={<ReportsPage />} />
-              <Route path="reports/lab" element={<ReportsPage />} />
-              <Route path="reports/inventory" element={<ReportsPage />} />
-              <Route path="reports/audit" element={<ReportsPage />} />
-              <Route path="reports/custom" element={<ReportsPage />} />
+              <Route path="reports" element={<DynamicSubModulePage />} />
+              <Route path="reports/financial" element={<DynamicSubModulePage />} />
+              <Route path="reports/lab" element={<DynamicSubModulePage />} />
+              <Route path="reports/inventory" element={<DynamicSubModulePage />} />
+              <Route path="reports/audit" element={<DynamicSubModulePage />} />
+              <Route path="reports/custom" element={<DynamicSubModulePage />} />
 
               {/* Analytics */}
-              <Route path="analytics" element={<AnalyticsPage />} />
-              <Route path="analytics/revenue" element={<AnalyticsPage />} />
-              <Route path="analytics/patients" element={<AnalyticsPage />} />
-              <Route path="analytics/doctors" element={<AnalyticsPage />} />
-              <Route path="analytics/departments" element={<AnalyticsPage />} />
+              <Route path="analytics" element={<DynamicSubModulePage />} />
+              <Route path="analytics/revenue" element={<DynamicSubModulePage />} />
+              <Route path="analytics/patients" element={<DynamicSubModulePage />} />
+              <Route path="analytics/doctors" element={<DynamicSubModulePage />} />
+              <Route path="analytics/departments" element={<DynamicSubModulePage />} />
 
               {/* Administration */}
-              <Route path="admin" element={<AdminPage />} />
-              <Route path="admin/departments" element={<AdminPage />} />
-              <Route path="admin/branches" element={<AdminPage />} />
-              <Route path="admin/rooms" element={<AdminPage />} />
-              <Route path="admin/services" element={<AdminPage />} />
-              <Route path="admin/audit" element={<AdminPage />} />
-              <Route path="admin/logs" element={<AdminPage />} />
-              <Route path="admin/api-keys" element={<AdminPage />} />
+              <Route path="admin" element={<DynamicSubModulePage />} />
+              <Route path="admin/departments" element={<DynamicSubModulePage />} />
+              <Route path="admin/branches" element={<DynamicSubModulePage />} />
+              <Route path="admin/rooms" element={<DynamicSubModulePage />} />
+              <Route path="admin/services" element={<DynamicSubModulePage />} />
+              <Route path="admin/audit" element={<DynamicSubModulePage />} />
+              <Route path="admin/logs" element={<DynamicSubModulePage />} />
+              <Route path="admin/api-keys" element={<DynamicSubModulePage />} />
 
               {/* User Management */}
-              <Route path="users" element={<UserManagementPage />} />
-              <Route path="users/roles" element={<UserManagementPage />} />
-              <Route path="users/permissions" element={<UserManagementPage />} />
-              <Route path="users/role-matrix" element={<UserManagementPage />} />
-              <Route path="users/login-history" element={<UserManagementPage />} />
+              <Route path="users" element={<DynamicSubModulePage />} />
+              <Route path="users/roles" element={<DynamicSubModulePage />} />
+              <Route path="users/permissions" element={<DynamicSubModulePage />} />
+              <Route path="users/role-matrix" element={<DynamicSubModulePage />} />
+              <Route path="users/login-history" element={<DynamicSubModulePage />} />
 
               {/* AI Center */}
-              <Route path="ai" element={<AICenterPage />} />
-              <Route path="ai/scribe" element={<AICenterPage />} />
-              <Route path="ai/diagnosis" element={<AICenterPage />} />
-              <Route path="ai/documents" element={<AICenterPage />} />
-              <Route path="ai/voice" element={<AICenterPage />} />
+              <Route path="ai" element={<DynamicSubModulePage />} />
+              <Route path="ai/scribe" element={<DynamicSubModulePage />} />
+              <Route path="ai/diagnosis" element={<DynamicSubModulePage />} />
+              <Route path="ai/documents" element={<DynamicSubModulePage />} />
+              <Route path="ai/voice" element={<DynamicSubModulePage />} />
 
               {/* Settings */}
-              <Route path="settings" element={<SettingsPage />} />
-              <Route path="settings/branding" element={<SettingsPage />} />
-              <Route path="settings/security" element={<SettingsPage />} />
-              <Route path="settings/localization" element={<SettingsPage />} />
-              <Route path="settings/backup" element={<SettingsPage />} />
-              <Route path="settings/notifications" element={<SettingsPage />} />
-              <Route path="settings/integrations" element={<SettingsPage />} />
+              <Route path="settings" element={<DynamicSubModulePage />} />
+              <Route path="settings/branding" element={<DynamicSubModulePage />} />
+              <Route path="settings/security" element={<DynamicSubModulePage />} />
+              <Route path="settings/localization" element={<DynamicSubModulePage />} />
+              <Route path="settings/backup" element={<DynamicSubModulePage />} />
+              <Route path="settings/notifications" element={<DynamicSubModulePage />} />
+              <Route path="settings/integrations" element={<DynamicSubModulePage />} />
 
               {/* Fallback */}
               <Route path="*" element={<NotFoundPage />} />
@@ -253,6 +235,7 @@ function App() {
         </Routes>
       </Router>
     </AuthProvider>
+    </MockDataProvider>
   );
 }
 

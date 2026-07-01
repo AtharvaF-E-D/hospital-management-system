@@ -4,25 +4,38 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight, Plus, User, Clock, MapPin, X } from "lucide-react";
+import { useMockData } from "@/contexts/MockDataContext";
 
 const daysInMonth = 30; // Mock 30 days for demo
 const startingDayOfWeek = 2; // Tuesday
 
-const mockAppointments = [
-  { id: 1, date: 5, time: "09:00 AM", patient: "Alice Cooper", doctor: "Dr. Smith", type: "Consultation" },
-  { id: 2, date: 5, time: "11:30 AM", patient: "Bob Marley", doctor: "Dr. Smith", type: "Follow-up" },
-  { id: 3, date: 12, time: "02:00 PM", patient: "Charlie Brown", doctor: "Dr. Adams", type: "Checkup" },
-  { id: 4, date: 18, time: "10:15 AM", patient: "David Bowie", doctor: "Dr. House", type: "Surgery" },
-  { id: 5, date: 22, time: "04:45 PM", patient: "Eve Smith", doctor: "Dr. Smith", type: "Consultation" },
-];
-
+// Replaced hardcoded array with context state
 export default function AppointmentsCalendarPage() {
+  const { appointments, addAppointment } = useMockData();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  
+  // Form state
+  const [formData, setFormData] = useState({
+    patient: "",
+    doctor: "Dr. Sarah Smith",
+    date: "",
+    time: "",
+    type: "Consultation",
+  });
 
   const openDrawer = (date = null) => {
     setSelectedDate(date);
+    setFormData(prev => ({
+      ...prev,
+      date: date ? `2026-06-${String(date).padStart(2,'0')}` : ""
+    }));
     setDrawerOpen(true);
+  };
+
+  const handleBooking = () => {
+    addAppointment(formData);
+    setDrawerOpen(false);
   };
 
   return (
@@ -73,7 +86,10 @@ export default function AppointmentsCalendarPage() {
               const isCurrentMonth = dayNum > 0 && dayNum <= daysInMonth;
               const isToday = dayNum === 15; // mock today
               
-              const dayAppointments = mockAppointments.filter(a => a.date === dayNum);
+              const dayAppointments = appointments.filter(a => {
+                const apptDate = new Date(a.date);
+                return apptDate.getDate() === dayNum && apptDate.getMonth() === 5; // Month is 0-indexed, so 5 is June
+              });
               
               return (
                 <div 
@@ -125,7 +141,7 @@ export default function AppointmentsCalendarPage() {
                 <label className="text-sm font-medium">Patient Search</label>
                 <div className="relative">
                   <User className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <input type="text" className="w-full h-9 rounded-md border border-input bg-background pl-9 pr-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Search by name, UHID, or phone..." />
+                  <input type="text" value={formData.patient} onChange={e => setFormData({...formData, patient: e.target.value})} className="w-full h-9 rounded-md border border-input bg-background pl-9 pr-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Search by name, UHID, or phone..." />
                 </div>
               </div>
               
@@ -140,7 +156,7 @@ export default function AppointmentsCalendarPage() {
               
               <div className="space-y-2">
                 <label className="text-sm font-medium">Doctor</label>
-                <select className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary">
+                <select value={formData.doctor} onChange={e => setFormData({...formData, doctor: e.target.value})} className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary">
                   <option>Dr. Sarah Smith</option>
                   <option>Dr. James Adams</option>
                 </select>
@@ -149,11 +165,11 @@ export default function AppointmentsCalendarPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Date</label>
-                  <input type="date" className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary" defaultValue={selectedDate ? `2026-06-${String(selectedDate).padStart(2,'0')}` : ''} />
+                  <input type="date" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Time</label>
-                  <input type="time" className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary" />
+                  <input type="time" value={formData.time} onChange={e => setFormData({...formData, time: e.target.value})} className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary" />
                 </div>
               </div>
               
@@ -165,7 +181,7 @@ export default function AppointmentsCalendarPage() {
             
             <div className="p-4 border-t flex justify-end gap-2 bg-muted/10">
               <Button variant="outline" onClick={() => setDrawerOpen(false)}>Cancel</Button>
-              <Button>Confirm Booking</Button>
+              <Button onClick={handleBooking}>Confirm Booking</Button>
             </div>
           </div>
         </div>

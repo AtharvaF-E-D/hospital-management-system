@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import PageHeader from "@/components/common/PageHeader";
 import DataTable from "@/components/common/DataTable";
 import { StatCard, StatusBadge } from "@/components/common/DataDisplay";
+import { useMockData } from "@/contexts/MockDataContext";
 import { Plus, Calendar, Clock, CheckCircle, XCircle, MoreHorizontal, Eye, Edit, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
@@ -10,18 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const appointments = Array.from({ length: 40 }, (_, i) => ({
-  id: i + 1,
-  appointmentId: `APT-${String(2000 + i).padStart(6, "0")}`,
-  patient: ["Rajesh Kumar", "Priya Sharma", "Amit Patel", "Sneha Singh", "Vikram Reddy"][i % 5],
-  doctor: ["Dr. Verma", "Dr. Iyer", "Dr. Kapoor", "Dr. Rao", "Dr. Shah"][i % 5],
-  department: ["Cardiology", "Orthopedics", "Neurology", "ENT", "Dermatology"][i % 5],
-  date: `2026-06-${String(1 + (i % 28)).padStart(2, "0")}`,
-  time: `${9 + (i % 8)}:${i % 2 === 0 ? "00" : "30"}`,
-  type: ["Consultation", "Follow Up", "Emergency", "Telemedicine"][i % 4],
-  status: ["pending", "completed", "cancelled", "active"][i % 4],
-}));
-
+// Replaced hardcoded array with context state
 const columns = [
   { key: "appointmentId", label: "Apt. ID", width: "130px" },
   { key: "patient", label: "Patient" },
@@ -39,6 +30,9 @@ const columns = [
 ];
 
 export default function AppointmentsPage() {
+  const navigate = useNavigate();
+  const { appointments, deleteAppointment } = useMockData();
+
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
@@ -49,7 +43,7 @@ export default function AppointmentsPage() {
           { label: "Appointments" },
         ]}
         actions={
-          <Button size="sm" className="h-8 text-xs">
+          <Button size="sm" className="h-8 text-xs" onClick={() => navigate("/appointments/calendar")}>
             <Plus className="h-3.5 w-3.5 mr-1" />
             New Appointment
           </Button>
@@ -79,7 +73,7 @@ export default function AppointmentsPage() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem><Eye className="h-3.5 w-3.5 mr-2" />View Details</DropdownMenuItem>
               <DropdownMenuItem><Edit className="h-3.5 w-3.5 mr-2" />Reschedule</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive"><XCircle className="h-3.5 w-3.5 mr-2" />Cancel</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive" onClick={() => deleteAppointment(row.id)}><XCircle className="h-3.5 w-3.5 mr-2" />Cancel</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
