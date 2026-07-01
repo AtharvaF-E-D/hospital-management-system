@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import PageHeader from "@/components/common/PageHeader";
 import DataTable from "@/components/common/DataTable";
+import GenericRecordModal from "@/components/common/GenericRecordModal";
+import { useMockData } from "@/contexts/MockDataContext";
 import { Button } from "@/components/ui/button";
 import { Plus, Search, Filter, Shield, ShieldCheck, ShieldAlert } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -39,6 +41,14 @@ const columns = [
 ];
 
 export default function PatientInsurancePage() {
+  const { getGenericRecords, addGenericRecord } = useMockData();
+  const [modalOpen, setModalOpen] = useState(false);
+  
+  const mockData = getGenericRecords("patients_insurance", () => insuranceData);
+
+  const handleSave = (data) => {
+    addGenericRecord("patients_insurance", data);
+  };
   return (
     <div className="flex flex-col gap-6 w-full pb-10">
       <PageHeader 
@@ -55,7 +65,7 @@ export default function PatientInsurancePage() {
               <Filter className="h-4 w-4 mr-2" />
               Filter
             </Button>
-            <Button size="sm">
+            <Button size="sm" onClick={() => setModalOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Add Policy
             </Button>
@@ -101,9 +111,17 @@ export default function PatientInsurancePage() {
 
       <DataTable 
         columns={columns} 
-        data={insuranceData} 
+        data={mockData} 
         searchable 
         searchPlaceholder="Search by UHID, patient name, provider, or policy number..."
+      />
+      
+      <GenericRecordModal 
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSave={handleSave}
+        columns={columns}
+        title="Insurance Policy"
       />
     </div>
   );

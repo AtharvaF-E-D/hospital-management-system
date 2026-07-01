@@ -32,6 +32,7 @@ export function MockDataProvider({ children }) {
 
   const [patients, setPatients] = useState(() => loadData("hms_patients", initialPatients));
   const [appointments, setAppointments] = useState(() => loadData("hms_appointments", initialAppointments));
+  const [genericRecords, setGenericRecords] = useState(() => loadData("hms_generic_records", {}));
 
   // Save to localStorage on change
   useEffect(() => {
@@ -41,6 +42,10 @@ export function MockDataProvider({ children }) {
   useEffect(() => {
     localStorage.setItem("hms_appointments", JSON.stringify(appointments));
   }, [appointments]);
+
+  useEffect(() => {
+    localStorage.setItem("hms_generic_records", JSON.stringify(genericRecords));
+  }, [genericRecords]);
 
   // Generic CRUD helpers
   const generateId = (prefix = "ID") => `${prefix}-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -82,6 +87,39 @@ export function MockDataProvider({ children }) {
     setAppointments((prev) => prev.filter((a) => a.id !== id));
   };
 
+  // --- Generic CRUD ---
+  const getGenericRecords = (collectionKey, initialMockGenerator = null) => {
+    if (!genericRecords[collectionKey] && initialMockGenerator) {
+      // Auto-initialize if requested
+      const mockData = initialMockGenerator();
+      setGenericRecords(prev => ({ ...prev, [collectionKey]: mockData }));
+      return mockData;
+    }
+    return genericRecords[collectionKey] || [];
+  };
+
+  const addGenericRecord = (collectionKey, record) => {
+    const newRecord = { id: Date.now(), ...record };
+    setGenericRecords((prev) => ({
+      ...prev,
+      [collectionKey]: [newRecord, ...(prev[collectionKey] || [])]
+    }));
+  };
+
+  const updateGenericRecord = (collectionKey, id, updatedData) => {
+    setGenericRecords((prev) => ({
+      ...prev,
+      [collectionKey]: (prev[collectionKey] || []).map(r => r.id === id ? { ...r, ...updatedData } : r)
+    }));
+  };
+
+  const deleteGenericRecord = (collectionKey, id) => {
+    setGenericRecords((prev) => ({
+      ...prev,
+      [collectionKey]: (prev[collectionKey] || []).filter(r => r.id !== id)
+    }));
+  };
+
   const value = {
     patients,
     addPatient,
@@ -92,6 +130,11 @@ export function MockDataProvider({ children }) {
     addAppointment,
     updateAppointment,
     deleteAppointment,
+    
+    getGenericRecords,
+    addGenericRecord,
+    updateGenericRecord,
+    deleteGenericRecord,
   };
 
   return (

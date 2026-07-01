@@ -1,8 +1,11 @@
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { sidebarMenuConfig } from "@/config/sidebarMenu";
 import PageHeader from "@/components/common/PageHeader";
 import DataTable from "@/components/common/DataTable";
 import { StatCard, StatusBadge } from "@/components/common/DataDisplay";
+import GenericRecordModal from "@/components/common/GenericRecordModal";
+import { useMockData } from "@/contexts/MockDataContext";
 import { Button } from "@/components/ui/button";
 import { Plus, BarChart2, Activity, FileText, CheckCircle, MoreHorizontal, Eye, Edit, Trash2, Settings, AlertTriangle } from "lucide-react";
 import {
@@ -42,6 +45,10 @@ const genericColumns = [
 export default function DynamicSubModulePage() {
   const location = useLocation();
   const currentPath = location.pathname;
+  const { getGenericRecords, addGenericRecord, updateGenericRecord, deleteGenericRecord } = useMockData();
+  
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingRecord, setEditingRecord] = useState(null);
 
   // Find the current module and sub-module from the config
   let currentModule = null;
@@ -66,7 +73,28 @@ export default function DynamicSubModulePage() {
   const moduleLabel = currentModule?.label || "Module";
   const subModuleLabel = currentSubModule?.label || "Page";
   
-  const mockData = generateMockData(moduleLabel);
+  const collectionKey = `dynamic_${currentPath.replace(/\//g, "_")}`;
+  const mockData = getGenericRecords(collectionKey, () => generateMockData(moduleLabel));
+
+  const handleSave = (data) => {
+    if (editingRecord) {
+      updateGenericRecord(collectionKey, editingRecord.id, data);
+    } else {
+      addGenericRecord(collectionKey, data);
+    }
+    setEditingRecord(null);
+  };
+
+  const handleEdit = (record) => {
+    setEditingRecord(record);
+    setModalOpen(true);
+  };
+
+  const handleDelete = (id) => {
+    if (confirm("Are you sure you want to delete this record?")) {
+      deleteGenericRecord(collectionKey, id);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6 pb-10 w-full">
@@ -84,7 +112,7 @@ export default function DynamicSubModulePage() {
               <Settings className="h-3.5 w-3.5 mr-1" />
               Configure
             </Button>
-            <Button size="sm" className="h-8 text-xs">
+            <Button size="sm" className="h-8 text-xs" onClick={() => { setEditingRecord(null); setModalOpen(true); }}>
               <Plus className="h-3.5 w-3.5 mr-1" />
               New Record
             </Button>
@@ -114,11 +142,20 @@ export default function DynamicSubModulePage() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem><Eye className="h-3.5 w-3.5 mr-2" />View Details</DropdownMenuItem>
-              <DropdownMenuItem><Edit className="h-3.5 w-3.5 mr-2" />Edit Record</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive"><Trash2 className="h-3.5 w-3.5 mr-2" />Delete</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleEdit(row)}><Edit className="h-3.5 w-3.5 mr-2" />Edit Record</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(row.id)}><Trash2 className="h-3.5 w-3.5 mr-2" />Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
+      />
+
+      <GenericRecordModal 
+        isOpen={modalOpen}
+        onClose={() => { setModalOpen(false); setEditingRecord(null); }}
+        onSave={handleSave}
+        columns={genericColumns}
+        title={subModuleLabel}
+        initialData={editingRecord}
       />
     </div>
   );

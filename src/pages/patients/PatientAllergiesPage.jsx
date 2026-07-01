@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import PageHeader from "@/components/common/PageHeader";
 import DataTable from "@/components/common/DataTable";
+import GenericRecordModal from "@/components/common/GenericRecordModal";
+import { useMockData } from "@/contexts/MockDataContext";
 import { Button } from "@/components/ui/button";
 import { Plus, Search, Filter, ShieldAlert, AlertCircle, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -47,10 +49,29 @@ const columns = [
   { key: "category", label: "Category", render: (val) => categoryBadge(val) },
   { key: "severity", label: "Severity", render: (val) => severityBadge(val) },
   { key: "reaction", label: "Reaction" },
+  { key: "identifiedOn", label: "Identified On" },
   { key: "status", label: "Status", render: (val) => <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">{val}</Badge> },
+  { 
+    key: "actions", 
+    label: "", 
+    width: "100px",
+    render: (val, row, props) => (
+      <div className="flex items-center gap-2">
+        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => props?.onEdit && props.onEdit(row)}><Search className="h-4 w-4" /></Button>
+      </div>
+    )
+  }
 ];
 
 export default function PatientAllergiesPage() {
+  const { getGenericRecords, addGenericRecord, updateGenericRecord, deleteGenericRecord } = useMockData();
+  const [modalOpen, setModalOpen] = useState(false);
+  
+  const mockData = getGenericRecords("patients_allergies", () => allergiesData);
+
+  const handleSave = (data) => {
+    addGenericRecord("patients_allergies", data);
+  };
   return (
     <div className="flex flex-col gap-6 w-full pb-10">
       <PageHeader 
@@ -67,7 +88,7 @@ export default function PatientAllergiesPage() {
               <Filter className="h-4 w-4 mr-2" />
               Filter
             </Button>
-            <Button size="sm">
+            <Button size="sm" onClick={() => setModalOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Add Allergy Record
             </Button>
@@ -113,9 +134,17 @@ export default function PatientAllergiesPage() {
 
       <DataTable 
         columns={columns} 
-        data={allergiesData} 
+        data={mockData} 
         searchable 
         searchPlaceholder="Search by UHID, patient name, or allergen..."
+      />
+      
+      <GenericRecordModal 
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSave={handleSave}
+        columns={columns}
+        title="Allergy Record"
       />
     </div>
   );

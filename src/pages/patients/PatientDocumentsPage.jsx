@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import PageHeader from "@/components/common/PageHeader";
 import DataTable from "@/components/common/DataTable";
+import GenericRecordModal from "@/components/common/GenericRecordModal";
+import { useMockData } from "@/contexts/MockDataContext";
 import { Button } from "@/components/ui/button";
 import { Plus, Search, Filter, FileText, Download, Eye, FileArchive, FileImage, FileBarChart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -66,6 +68,14 @@ const columns = [
 ];
 
 export default function PatientDocumentsPage() {
+  const { getGenericRecords, addGenericRecord } = useMockData();
+  const [modalOpen, setModalOpen] = useState(false);
+  
+  const mockData = getGenericRecords("patients_documents", () => documentsData);
+
+  const handleSave = (data) => {
+    addGenericRecord("patients_documents", data);
+  };
   return (
     <div className="flex flex-col gap-6 w-full pb-10">
       <PageHeader 
@@ -82,7 +92,7 @@ export default function PatientDocumentsPage() {
               <Filter className="h-4 w-4 mr-2" />
               Filter
             </Button>
-            <Button size="sm">
+            <Button size="sm" onClick={() => setModalOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Upload Document
             </Button>
@@ -139,9 +149,17 @@ export default function PatientDocumentsPage() {
 
       <DataTable 
         columns={columns} 
-        data={documentsData} 
+        data={mockData} 
         searchable 
         searchPlaceholder="Search by document name, patient, or type..."
+      />
+      
+      <GenericRecordModal 
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSave={handleSave}
+        columns={columns}
+        title="Document"
       />
     </div>
   );
