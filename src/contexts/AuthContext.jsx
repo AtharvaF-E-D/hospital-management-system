@@ -21,11 +21,17 @@ export const AuthProvider = ({ children }) => {
     return new Promise((resolve) => {
       setTimeout(() => {
         const isDoctor = email.toLowerCase().includes("doctor");
+        const isNurse = email.toLowerCase().includes("nurse");
+        
+        let role = "SUPER_ADMIN";
+        if (isDoctor) role = "DOCTOR";
+        if (isNurse) role = "NURSE";
+
         const dummyUser = {
-          id: isDoctor ? "doc-1" : "1",
-          name: isDoctor ? "Dr. Sarah Smith" : "Dr. John Doe",
+          id: isDoctor ? "doc-1" : isNurse ? "nurse-1" : "1",
+          name: isDoctor ? "Dr. Sarah Smith" : isNurse ? "Nurse Emily" : "Admin User",
           email: email,
-          role: isDoctor ? "DOCTOR" : "SUPER_ADMIN", // Defaulting to super admin for demo unless doctor
+          role: role,
         };
         setUser(dummyUser);
         localStorage.setItem("hospital_user", JSON.stringify(dummyUser));

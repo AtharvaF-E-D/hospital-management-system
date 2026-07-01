@@ -30,6 +30,8 @@ export default function LoginPage() {
         const loggedInUser = JSON.parse(localStorage.getItem("hospital_user"));
         if (loggedInUser?.role === "DOCTOR") {
           navigate("/doctor", { replace: true });
+        } else if (loggedInUser?.role === "NURSE") {
+          navigate("/nurse", { replace: true });
         } else {
           navigate(from, { replace: true });
         }
@@ -155,6 +157,7 @@ export default function LoginPage() {
               <div className="text-center text-xs text-muted-foreground pt-2 space-y-1">
                 <p>Demo Admin: admin@epichealth.com</p>
                 <p>Demo Doctor: doctor@epichealth.com</p>
+                <p>Demo Nurse: nurse@epichealth.com</p>
                 <p>Use any password.</p>
               </div>
             </form>

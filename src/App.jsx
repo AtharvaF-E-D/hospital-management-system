@@ -12,6 +12,21 @@ import PrescriptionPage from "./pages/doctor/PrescriptionPage";
 import LabOrderPage from "./pages/doctor/LabOrderPage";
 import RadiologyOrderPage from "./pages/doctor/RadiologyOrderPage";
 import DoctorReportsPage from "./pages/doctor/DoctorReportsPage";
+import MessagesPage from "./pages/doctor/MessagesPage";
+import TasksPage from "./pages/doctor/TasksPage";
+import DocumentsPage from "./pages/doctor/DocumentsPage";
+import DoctorProfilePage from "./pages/doctor/DoctorProfilePage";
+import DoctorSettingsPage from "./pages/doctor/DoctorSettingsPage";
+
+// Nurse Pages
+import NurseLayout from "./layouts/nurse/NurseLayout";
+import NurseDashboard from "./pages/nurse/NurseDashboard";
+import VitalsPage from "./pages/nurse/VitalsPage";
+import MedicationPage from "./pages/nurse/MedicationPage";
+import NursingNotesPage from "./pages/nurse/NursingNotesPage";
+import NurseTasksPage from "./pages/nurse/NurseTasksPage";
+import BedManagementPage from "./pages/nurse/BedManagementPage";
+import NurseReportsPage from "./pages/nurse/NurseReportsPage";
 
 // Pages
 import LoginPage from "./pages/LoginPage";
@@ -65,14 +80,26 @@ function App() {
               <Route path="consultation/referrals" element={<DynamicSubModulePage />} />
               <Route path="consultation/telemedicine" element={<DynamicSubModulePage />} />
               
-              <Route path="messages" element={<DynamicSubModulePage />} />
-              <Route path="tasks" element={<DynamicSubModulePage />} />
-              <Route path="documents" element={<DynamicSubModulePage />} />
+              <Route path="messages" element={<MessagesPage />} />
+              <Route path="tasks" element={<TasksPage />} />
+              <Route path="documents" element={<DocumentsPage />} />
               <Route path="reports" element={<DoctorReportsPage />} />
-              <Route path="profile" element={<DynamicSubModulePage />} />
-              <Route path="settings" element={<DynamicSubModulePage />} />
+              <Route path="profile" element={<DoctorProfilePage />} />
+              <Route path="settings" element={<DoctorSettingsPage />} />
               
               <Route path="*" element={<NotFoundPage />} />
+            </Route>
+
+            {/* Nurse Portal Routes */}
+            <Route path="/nurse" element={<NurseLayout />}>
+              <Route index element={<NurseDashboard />} />
+              <Route path="vitals" element={<VitalsPage />} />
+              <Route path="medication" element={<MedicationPage />} />
+              <Route path="notes" element={<NursingNotesPage />} />
+              <Route path="tasks" element={<NurseTasksPage />} />
+              <Route path="beds" element={<BedManagementPage />} />
+              <Route path="reports" element={<NurseReportsPage />} />
+              <Route path="*" element={<DynamicSubModulePage />} />
             </Route>
 
             {/* Super Admin / Staff Portal Routes */}
