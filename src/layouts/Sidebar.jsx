@@ -32,7 +32,7 @@ function SidebarItem({ item, isOpen, depth = 0 }) {
           "flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-[13px] font-medium transition-colors relative group border-l-[3px] border-transparent",
           isActive || isChildActive
             ? "bg-primary-light text-primary border-l-primary"
-            : "text-foreground hover:bg-[#F5FBFD] hover:text-primary"
+            : "text-foreground hover:bg-muted hover:text-primary"
         )}
       >
         {Icon && (
@@ -73,7 +73,7 @@ function SidebarItem({ item, isOpen, depth = 0 }) {
                       "flex items-center rounded-md px-2.5 py-1.5 text-[12px] font-medium transition-colors",
                       isChildItemActive
                         ? "bg-primary-light text-primary font-semibold"
-                        : "text-muted-foreground hover:bg-[#F5FBFD] hover:text-primary"
+                        : "text-muted-foreground hover:bg-muted hover:text-primary"
                     )}
                   >
                     <span className="truncate">{child.label}</span>

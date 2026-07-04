@@ -44,7 +44,11 @@ const bedManagementItems = [
   { icon: Bed, label: "Bed Management", href: "/nurse/beds" },
   { icon: LogIn, label: "Admissions", href: "/nurse/admissions" },
   { icon: LogOut, label: "Transfers", href: "/nurse/transfers" },
-  { icon: ClipboardCheck, label: "Discharge Checklist", href: "/nurse/discharge" },
+  {
+    icon: ClipboardCheck,
+    label: "Discharge Checklist",
+    href: "/nurse/discharge",
+  },
 ];
 
 const alertsAndCommsItems = [
@@ -62,15 +66,14 @@ const miscItems = [
 
 export default function NurseSidebar() {
   return (
-    <div className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col text-slate-300 h-full">
-      <div className="h-16 flex items-center px-6 border-b border-slate-800 shrink-0 bg-slate-950">
-        <Activity className="h-6 w-6 text-rose-500 mr-2" />
-        <span className="font-bold text-lg text-white">Nurse Portal</span>
+    <div className="w-64 bg-surface border-r flex flex-col text-foreground h-full transition-all duration-300 z-20">
+      <div className="h-16 flex items-center px-6 border-b shrink-0">
+        <Activity className="h-6 w-6 text-primary mr-2" />
+        <span className="font-bold text-lg text-foreground tracking-tight block">Nurse Portal</span>
       </div>
 
       <ScrollArea className="flex-1 py-4">
         <nav className="space-y-6 px-3">
-          
           <div className="space-y-1">
             {mainNavItems.map((item) => (
               <NavItem key={item.label} item={item} />
@@ -78,33 +81,40 @@ export default function NurseSidebar() {
           </div>
 
           <div className="space-y-1">
-            <h4 className="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Patient Care</h4>
+            <h4 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              Patient Care
+            </h4>
             {patientCareItems.map((item) => (
               <NavItem key={item.label} item={item} />
             ))}
           </div>
 
           <div className="space-y-1">
-            <h4 className="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Bed Management</h4>
+            <h4 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              Bed Management
+            </h4>
             {bedManagementItems.map((item) => (
               <NavItem key={item.label} item={item} />
             ))}
           </div>
 
           <div className="space-y-1">
-            <h4 className="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Alerts & Comms</h4>
+            <h4 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              Alerts & Comms
+            </h4>
             {alertsAndCommsItems.map((item) => (
               <NavItem key={item.label} item={item} />
             ))}
           </div>
 
           <div className="space-y-1 pb-4">
-            <h4 className="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Account</h4>
+            <h4 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              Account
+            </h4>
             {miscItems.map((item) => (
               <NavItem key={item.label} item={item} />
             ))}
           </div>
-
         </nav>
       </ScrollArea>
     </div>
@@ -115,12 +125,12 @@ function NavItem({ item }) {
   return (
     <NavLink
       to={item.href}
-      end={item.href === '/nurse'}
+      end={item.href === "/nurse"}
       className={({ isActive }) =>
         `flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
           isActive
-            ? "bg-rose-500/10 text-rose-400"
-            : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+            ? "bg-primary-light text-primary"
+            : "text-foreground hover:bg-muted hover:text-primary"
         }`
       }
     >

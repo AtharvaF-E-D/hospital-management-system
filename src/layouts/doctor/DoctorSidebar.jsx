@@ -14,34 +14,34 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
-  ChevronDown
+  ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { title: "Dashboard", path: "/doctor", icon: LayoutDashboard },
-  { 
-    title: "Appointments", 
-    path: "/doctor/appointments", 
+  {
+    title: "Appointments",
+    path: "/doctor/appointments",
     icon: Calendar,
     subItems: [
       { title: "Today's Schedule", path: "/doctor/appointments/today" },
       { title: "Calendar", path: "/doctor/appointments/calendar" },
       { title: "Waiting Queue", path: "/doctor/appointments/queue" },
-    ]
+    ],
   },
-  { 
-    title: "Patients", 
-    path: "/doctor/patients", 
+  {
+    title: "Patients",
+    path: "/doctor/patients",
     icon: Users,
     subItems: [
       { title: "Patient Search", path: "/doctor/patients/search" },
       { title: "My Patients", path: "/doctor/patients/list" },
-    ]
+    ],
   },
-  { 
-    title: "Consultation", 
-    path: "/doctor/consultation", 
+  {
+    title: "Consultation",
+    path: "/doctor/consultation",
     icon: Stethoscope,
     subItems: [
       { title: "Clinical Notes", path: "/doctor/consultation/notes" },
@@ -52,7 +52,7 @@ const NAV_ITEMS = [
       { title: "Certificates", path: "/doctor/consultation/certificates" },
       { title: "Referrals", path: "/doctor/consultation/referrals" },
       { title: "Telemedicine", path: "/doctor/consultation/telemedicine" },
-    ]
+    ],
   },
   { title: "Messages", path: "/doctor/messages", icon: MessageSquare },
   { title: "Tasks", path: "/doctor/tasks", icon: ClipboardList },
@@ -67,7 +67,7 @@ export default function DoctorSidebar({ isOpen, toggleSidebar }) {
   const [expandedGroups, setExpandedGroups] = useState({});
 
   const toggleGroup = (path) => {
-    setExpandedGroups(prev => ({ ...prev, [path]: !prev[path] }));
+    setExpandedGroups((prev) => ({ ...prev, [path]: !prev[path] }));
   };
 
   return (
@@ -75,12 +75,12 @@ export default function DoctorSidebar({ isOpen, toggleSidebar }) {
       initial={{ width: 260 }}
       animate={{ width: isOpen ? 260 : 72 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="h-full bg-white border-r border-slate-200 flex flex-col shadow-sm relative z-20"
+      className="h-full bg-surface border-r flex flex-col shadow-sm relative z-20"
     >
       {/* Brand */}
-      <div className="h-16 flex items-center px-4 border-b border-slate-100 shrink-0">
+      <div className="h-16 flex items-center px-4 border-b shrink-0">
         <div className="flex items-center gap-3 w-full overflow-hidden">
-          <div className="h-10 w-10 shrink-0 rounded-lg bg-teal-600 flex items-center justify-center text-white font-bold shadow-md">
+          <div className="h-10 w-10 shrink-0 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold shadow-md">
             <Stethoscope size={20} />
           </div>
           <AnimatePresence mode="popLayout">
@@ -91,8 +91,12 @@ export default function DoctorSidebar({ isOpen, toggleSidebar }) {
                 exit={{ opacity: 0, x: -10 }}
                 className="whitespace-nowrap"
               >
-                <span className="font-bold text-lg text-slate-800 tracking-tight block">Epic EMR</span>
-                <span className="text-xs text-teal-600 font-medium">Doctor Portal</span>
+                <span className="font-bold text-lg text-foreground tracking-tight block">
+                  Epic EMR
+                </span>
+                <span className="text-xs text-primary font-medium">
+                  Doctor Portal
+                </span>
               </motion.div>
             )}
           </AnimatePresence>
@@ -103,7 +107,10 @@ export default function DoctorSidebar({ isOpen, toggleSidebar }) {
       <div className="flex-1 overflow-y-auto py-4 px-3 custom-scrollbar">
         <div className="space-y-1">
           {NAV_ITEMS.map((item) => {
-            const isActive = location.pathname === item.path || (item.path !== '/doctor' && location.pathname.startsWith(item.path));
+            const isActive =
+              location.pathname === item.path ||
+              (item.path !== "/doctor" &&
+                location.pathname.startsWith(item.path));
             const hasSubItems = item.subItems && item.subItems.length > 0;
             const isExpanded = expandedGroups[item.path];
 
@@ -117,18 +124,27 @@ export default function DoctorSidebar({ isOpen, toggleSidebar }) {
                     }}
                     className={cn(
                       "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium",
-                      isActive 
-                        ? "bg-teal-50 text-teal-700" 
-                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                      isActive
+                        ? "bg-primary-light text-primary"
+                        : "text-foreground hover:bg-muted hover:text-primary",
                     )}
                   >
-                    <item.icon size={20} className={cn("shrink-0", isActive ? "text-teal-600" : "text-slate-500")} />
+                    <item.icon
+                      size={20}
+                      className={cn(
+                        "shrink-0",
+                        isActive ? "text-primary" : "text-muted-foreground",
+                      )}
+                    />
                     {isOpen && (
                       <>
                         <span className="flex-1 text-left">{item.title}</span>
-                        <ChevronDown 
-                          size={16} 
-                          className={cn("transition-transform duration-200", isExpanded ? "rotate-180" : "")} 
+                        <ChevronDown
+                          size={16}
+                          className={cn(
+                            "transition-transform duration-200",
+                            isExpanded ? "rotate-180" : "",
+                          )}
                         />
                       </>
                     )}
@@ -136,13 +152,15 @@ export default function DoctorSidebar({ isOpen, toggleSidebar }) {
                 ) : (
                   <NavLink
                     to={item.path}
-                    end={item.path === '/doctor'}
-                    className={({ isActive: isExactActive }) => cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium",
-                      isExactActive 
-                        ? "bg-teal-600 text-white shadow-md" 
-                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                    )}
+                    end={item.path === "/doctor"}
+                    className={({ isActive: isExactActive }) =>
+                      cn(
+                        "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium",
+                        isExactActive
+                          ? "bg-primary-light text-primary shadow-md"
+                          : "text-foreground hover:bg-muted hover:text-primary",
+                      )
+                    }
                   >
                     <item.icon size={20} className="shrink-0" />
                     {isOpen && <span>{item.title}</span>}
@@ -158,16 +176,18 @@ export default function DoctorSidebar({ isOpen, toggleSidebar }) {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden ml-9 mt-1 space-y-1"
                     >
-                      {item.subItems.map(subItem => (
+                      {item.subItems.map((subItem) => (
                         <NavLink
                           key={subItem.path}
                           to={subItem.path}
-                          className={({ isActive: isSubActive }) => cn(
-                            "block px-3 py-2 rounded-md text-sm transition-colors",
-                            isSubActive 
-                              ? "bg-teal-50 text-teal-700 font-semibold" 
-                              : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
-                          )}
+                          className={({ isActive: isSubActive }) =>
+                            cn(
+                              "block px-3 py-2 rounded-md text-sm transition-colors",
+                              isSubActive
+                                ? "bg-primary-light text-primary font-semibold"
+                                : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                            )
+                          }
                         >
                           {subItem.title}
                         </NavLink>
@@ -184,7 +204,7 @@ export default function DoctorSidebar({ isOpen, toggleSidebar }) {
       {/* Collapse Button */}
       <button
         onClick={toggleSidebar}
-        className="absolute -right-3 top-20 bg-white border border-slate-200 rounded-full p-1 shadow-sm text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors z-30"
+        className="absolute -right-3 top-20 bg-surface border rounded-full p-1 shadow-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors z-30"
       >
         {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
       </button>
